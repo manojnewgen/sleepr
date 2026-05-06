@@ -1,0 +1,83 @@
+Fixing GitHub Push Protection Errors: A Developer’s Journey
+Introduction
+When working with Git and GitHub, developers often run into issues that seem cryptic at first glance. One of the most frustrating is when GitHub refuses to accept a push due to repository rule violations. This article documents a real-world case: pushing a NestJS project to GitHub, hitting push protection errors, and resolving them by cleaning secrets from the repository history.
+
+🛑 The Problem
+Initial Setup
+The repository was connected to GitHub with:
+
+bash
+git remote set-url origin https://github.com/manojnewgen/sleepr.git
+Everything looked fine until the push:
+
+bash
+git push origin main
+The Error
+GitHub responded with:
+
+Code
+error: GH013: Repository rule violations found for refs/heads/main.
+Push cannot contain secrets
+It flagged multiple sensitive values:
+
+Stripe Test API Secret Key
+
+Google OAuth Client ID
+
+Google OAuth Client Secret
+
+Google OAuth Refresh Token
+
+These were committed inside .env files in past commits.
+
+🔍 Why GitHub Blocked the Push
+GitHub has push protection enabled. It scans commits for sensitive values (API keys, tokens, passwords). If secrets are detected, the push is blocked to prevent accidental leaks.
+
+Removing .env files in the latest commit wasn’t enough — the secrets were still present in the commit history.
+
+🛠️ The Solution
+Step 1: Stop Tracking .env Files
+bash
+git rm --cached apps/payments/.env apps/notifications/.env
+echo ".env" >> .gitignore
+git commit -m "Remove .env files from repo"
+This ensures .env files won’t be committed again.
+
+Step 2: Clean Secrets from History
+Since secrets were in older commits, history had to be rewritten.
+
+Install git-filter-repo:
+
+bash
+pip install git-filter-repo
+Run cleanup on a fresh clone (important to avoid safety aborts):
+
+bash
+git clone --no-local C:\Manoj\nestjs\sleepr sleepr-clean
+cd sleepr-clean
+python -m git_filter_repo --path apps/payments/.env --path apps/notifications/.env --invert-paths
+This strips .env files from all commits.
+
+Step 3: Reconnect Remote
+Inside the cleaned repo:
+
+bash
+git remote add origin https://github.com/manojnewgen/sleepr.git
+Step 4: Force Push Cleaned History
+bash
+git push origin main --force
+This overwrote the old history with the cleaned one, allowing the push to succeed.
+
+🔒 Security Follow‑Up
+Rotate secrets: Even test keys should be regenerated.
+
+Use .gitignore: Always ignore .env files.
+
+Store secrets securely: Use GitHub Actions secrets, AWS Secrets Manager, or similar.
+
+✅ Conclusion
+The journey from “remote rejected” errors to a successful push highlights two key lessons:
+
+GitHub’s push protection is a safeguard, not a nuisance — it prevents accidental leaks.
+
+Cleaning history with git-filter-repo (or BFG Repo-Cleaner) is the right way to remove sensitive files once they’ve been committed.
