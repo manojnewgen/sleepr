@@ -9,6 +9,7 @@ import { NotificationsService } from './notifications.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: './apps/notifications/.env',
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
         GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),

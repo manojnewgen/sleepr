@@ -10,6 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: './apps/payments/.env',
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
         NOTIFICATIONS_HOST: Joi.string().required(),

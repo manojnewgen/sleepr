@@ -15,6 +15,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: './apps/auth/.env',
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
