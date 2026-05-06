@@ -1,3 +1,5 @@
+logging: CLOUD_LOGGING_ONLY
+
 steps:
   # Reservations
   - name: 'gcr.io/cloud-builders/docker'
@@ -11,8 +13,7 @@ steps:
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      ['push', 'asia-south1-docker.pkg.dev/sleeprmanoj/reservations']
+    args: ['push', 'asia-south1-docker.pkg.dev/sleeprmanoj/reservations']
 
   # Auth
   - name: 'gcr.io/cloud-builders/docker'
@@ -40,8 +41,7 @@ steps:
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      ['push', 'asia-south1-docker.pkg.dev/sleeprmanoj/notifications/production']
+    args: ['push', 'asia-south1-docker.pkg.dev/sleeprmanoj/notifications/production']
 
   # Payments
   - name: 'gcr.io/cloud-builders/docker'
