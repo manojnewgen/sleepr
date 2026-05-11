@@ -5,13 +5,13 @@ steps:
       [
         'build',
         '-t',
-        'asia-south1-docker.pkg.dev/sleeprmanoj/reservations',
+        'asia-south1-docker.pkg.dev/sleeprmanoj/reservations/production',
         '-f',
         'apps/reservations/Dockerfile',
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/sleeprmanoj/reservations']
+    args: ['push', 'asia-south1-docker.pkg.dev/sleeprmanoj/reservations/production']
 
   # Auth
   - name: 'gcr.io/cloud-builders/docker'

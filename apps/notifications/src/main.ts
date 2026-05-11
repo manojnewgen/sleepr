@@ -14,6 +14,7 @@ async function bootstrap() {
       port: configService.get('PORT'),
     },
   });
+  //adding the comments
   app.useLogger(app.get(Logger));
   await app.startAllMicroservices();
 }
