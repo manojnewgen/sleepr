@@ -9,8 +9,8 @@ RUN apk add --no-cache python3 make g++ \
 
 RUN pnpm install --frozen-lockfile --ignore-scripts
 
+COPY libs libs
 COPY apps/reservations apps/reservations
-COPY libs libscd
 
 RUN pnpm run build reservations
 
@@ -27,4 +27,4 @@ RUN npm install -g pnpm
 COPY --from=development /usr/src/app/node_modules ./node_modules
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/reservations/main"] 
+CMD ["node", "dist/apps/reservations/main"]
